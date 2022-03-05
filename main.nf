@@ -29,10 +29,10 @@ nextflow.enable.dsl = 2
  * given `params.foo` specify on the run command line `--foo some_value`.
  */
 
-params.reads = "$projectDir/data/ggal/*_{1,2}.fq"
-params.transcriptome = "$projectDir/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa"
+params.reads = "$projectDir/rnaseq_gcp_nf_demo/data/ggal/*_{1,2}.fq"
+params.transcriptome = "$projectDir/rnaseq_gcp_nf_demo/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa"
 params.outdir = "results"
-params.multiqc = "$projectDir/multiqc"
+params.multiqc = "$projectDir/rnaseq_gcp_nf_demo/multiqc"
 
 log.info """\
  R N A S E Q - N F   P I P E L I N E

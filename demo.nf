@@ -37,11 +37,11 @@ nextflow.preview.dsl = 2
  * given `params.foo` specify on the run command line `--foo some_value`.
  */
 
-params.reads = "$projectDir/data/ggal/*_{1,2}.fq"
-params.ref1 = "$projectDir/data/ggal/ref1.fa"
-params.ref2 = "$projectDir/data/ggal/ref2.fa"
+params.reads = "$projectDir/rnaseq_gcp_nf_demo/data/ggal/*_{1,2}.fq"
+params.ref1 = "$projectDir/rnaseq_gcp_nf_demo/data/ggal/ref1.fa"
+params.ref2 = "$projectDir/rnaseq_gcp_nf_demo/data/ggal/ref2.fa"
 params.outdir = "results"
-params.multiqc = "$projectDir/multiqc"
+params.multiqc = "$projectDir/rnaseq_gcp_nf_demo/multiqc"
 
 log.info """\
  R N A S E Q - N F   P I P E L I N E
