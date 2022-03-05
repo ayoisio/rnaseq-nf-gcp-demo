@@ -1,4 +1,7 @@
-FROM continuumio/miniconda3:4.10.3
+FROM continuumio/miniconda:4.7.12
+MAINTAINER Paolo Di Tommaso <paolo.ditommaso@gmail.com>
+
+RUN apt-get -y install ttf-dejavu
 
 COPY conda.yml .
 RUN \

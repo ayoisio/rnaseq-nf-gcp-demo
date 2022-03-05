@@ -1,3 +1,4 @@
+#!/bin/bash nextflow 
 params.outdir = 'results'
 
 process MULTIQC {

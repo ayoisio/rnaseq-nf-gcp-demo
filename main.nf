@@ -1,7 +1,5 @@
-#!/usr/bin/env nextflow 
-
 /* 
- * Copyright (c) 2020-2021, Seqera Labs 
+ * Copyright (c) 2020, Seqera Labs 
  * Copyright (c) 2013-2019, Centre for Genomic Regulation (CRG).
  *
  * This Source Code Form is subject to the terms of the Mozilla Public
@@ -31,7 +29,7 @@ nextflow.enable.dsl = 2
  * given `params.foo` specify on the run command line `--foo some_value`.
  */
 
-params.reads = "$baseDir/data/ggal/ggal_gut_{1,2}.fq"
+params.reads = "$baseDir/data/ggal/*_{1,2}.fq"
 params.transcriptome = "$baseDir/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa"
 params.outdir = "results"
 params.multiqc = "$baseDir/multiqc"

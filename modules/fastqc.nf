@@ -1,3 +1,4 @@
+#!/bin/bash nextflow
 params.outdir = 'results'
 
 process FASTQC {
@@ -12,6 +13,7 @@ process FASTQC {
 
     script:
     """
-    fastqc.sh "$sample_id" "$reads"
+    mkdir fastqc_${sample_id}_logs
+    fastqc -o fastqc_${sample_id}_logs -f fastq -q ${reads}
     """
 }
