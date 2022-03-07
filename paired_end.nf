@@ -35,7 +35,7 @@ process TRIMGALORE {
     env trim_length
 
     output:
-    tuple val(pair_id), ["${pair_id}_val_1.fq.gz", "${pair_id}_val_2.fq.gz"], emit: trimmed_read_pairs_ch
+    tuple val(pair_id), path("*.fq.gz"), emit: trimmed_read_pairs_ch
 
     script:
     """
