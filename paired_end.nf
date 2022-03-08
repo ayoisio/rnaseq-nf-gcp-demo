@@ -13,7 +13,7 @@ nextflow.preview.dsl=2
 params.reads = '$projectDir/*_{1,2}.fastq.gz'
 params.star_index = '$projectDir/assembly-annotation/refdata-gex-GRCh38-2020-A/star'
 params.results_dir = 'results'
-params.trim_length = '30'
+params.trim_length = 30
 
 log.info """\
  R N A S E Q  P I P E L I N E - P A I R  E N D  (G R C h 3 8)
@@ -32,7 +32,7 @@ process TRIMGALORE {
 
     input:
     tuple val(pair_id), path(reads)
-    env trim_length
+    val trim_length
 
     output:
     tuple val(pair_id), path("*.fq.gz"), emit: trimmed_read_pairs_ch
@@ -53,7 +53,7 @@ process FASTQC {
 
     input:
     tuple val(pair_id), path(reads)
-    env results_dir
+    val results_dir
 
     output:
     path "fastqc_${pair_id}_logs/*"
@@ -74,8 +74,8 @@ process RSEM {
 
     input:
     tuple val(pair_id), path(trimmed_reads)
-    env star_index
-    env results_dir
+    val star_index
+    val results_dir
 
     output:
     path "output_${pair_id}*"
