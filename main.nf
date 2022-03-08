@@ -10,8 +10,8 @@ nextflow.preview.dsl=2
  * Default pipeline parameters. They can be overriden on the command line eg.
  * given `params.foo` specify on the run command line `--foo some_value`.
  */
-params.reads = '$projectDir/*_{1,2}.fastq.gz'
-params.star_index = '$projectDir/assembly-annotation/refdata-gex-GRCh38-2020-A/star'
+params.reads = "$projectDir/*_{1,2}.fastq.gz"
+params.star_index = "$projectDir/assembly-annotation/refdata-gex-GRCh38-2020-A/star"
 params.results_dir = 'results'
 params.trim_length = 30
 
