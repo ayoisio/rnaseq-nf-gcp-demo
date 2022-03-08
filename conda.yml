@@ -45,7 +45,6 @@ dependencies:
   # - spectra=0.0.11
   # - ncurses=6.3
   # - bioconductor-biobase=2.54.0
-  # - xz=5.2.5
   - samtools=1.15
   - cutadapt=3.7
   - fastqc=0.11.9
