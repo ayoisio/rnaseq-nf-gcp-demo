@@ -32,7 +32,7 @@ nextflow.enable.dsl = 2
  */
 params.reads = "$baseDir/data/ggal/ggal_gut_{1,2}.fq"
 params.transcriptome = "$baseDir/data/ggal/ggal_1_48850000_49020000.Ggal71.500bpflank.fa"
-params.outdir = "results"
+params.results_dir = "results"
 params.multiqc = "$baseDir/multiqc"
 
 log.info """\
@@ -40,7 +40,7 @@ log.info """\
  ===================================
  transcriptome: ${params.transcriptome}
  reads        : ${params.reads}
- outdir       : ${params.outdir}
+ results_dir       : ${params.results_dir}
  """
 
 // import modules
@@ -60,5 +60,5 @@ workflow {
  * completion handler
  */
 workflow.onComplete {
-	log.info ( workflow.success ? "\nDone! Open the following report in your browser --> $params.outdir/multiqc_report.html\n" : "Oops .. something went wrong" )
+	log.info ( workflow.success ? "\nDone! Open the following report in your browser --> $params.results_dir/multiqc_report.html\n" : "Oops .. something went wrong" )
 }
