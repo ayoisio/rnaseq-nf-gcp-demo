@@ -40,7 +40,7 @@ process TRIMGALORE {
     script:
     """
     echo ${pair_id}
-    trim_galore --length $trim_length --paired $reads --cores=${task.cpus}
+    trim_galore --length $trim_length --paired $reads --cores=4
     """
 }
 
@@ -82,7 +82,7 @@ process RSEM {
 
     script:
     """
-    rsem-calculate-expression -p ${task.cpus} <(zcat ${trimmed_reads[0]}) <(zcat ${trimmed_reads[1]}) --paired-end \
+    rsem-calculate-expression -p 8 <(zcat ${trimmed_reads[0]}) <(zcat ${trimmed_reads[1]}) --paired-end \
       --star --seed 1337 \
       --estimate-rspd \
       --append-names \
