@@ -82,6 +82,11 @@ process RSEM {
 
     script:
     """
+    echo $star_index files:
+    ls -rlth $star_index
+    cp -rf $star_index/* .
+    echo "./ files:"
+    ls -rlth .
     rsem-calculate-expression -p 8 <(zcat ${trimmed_reads[0]}) <(zcat ${trimmed_reads[1]}) --paired-end \
       --star --seed 1337 \
       --estimate-rspd \
@@ -93,9 +98,9 @@ process RSEM {
 
 workflow {
   read_pairs_ch = channel.fromFilePairs(params.reads, checkIfExists: true)
-  TRIMGALORE(read_pairs_ch, params.trim_length)
-  FASTQC(TRIMGALORE.out.trimmed_read_pairs_ch, params.results_dir)
-  RSEM(TRIMGALORE.out.trimmed_read_pairs_ch, params.star_index, params.results_dir)
+  // TRIMGALORE(read_pairs_ch, params.trim_length)
+  // FASTQC(TRIMGALORE.out.trimmed_read_pairs_ch, params.results_dir)
+  RSEM(params.reads, params.star_index, params.results_dir)
 }
 
 /*
