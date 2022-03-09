@@ -74,7 +74,7 @@ process RSEM {
 
     input:
     tuple val(pair_id), path(trimmed_reads)
-    val star_index
+    path(star_index)
     val results_dir
 
     output:
