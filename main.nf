@@ -87,14 +87,12 @@ process RSEM {
     cp -rf $star_index/* .
     echo "./ files:"
     ls -rlth .
-    rsem-calculate-expression <(zcat ${trimmed_reads[0]}) <(zcat ${trimmed_reads[1]}) $star_index output_${pair_id} \
-      --num-threads 8 \
-      --paired-end \
-      --star \
-      --seed 1337 \
+    rsem-calculate-expression -p 8 <(zcat ${trimmed_reads[0]}) <(zcat ${trimmed_reads[1]}) --paired-end \
+      --star --seed 1337 \
       --estimate-rspd \
       --append-names \
-      --output-genome-bam
+      --output-genome-bam \
+      $star_index output_${pair_id}
     """
 }
 
