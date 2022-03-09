@@ -100,7 +100,7 @@ workflow {
   read_pairs_ch = channel.fromFilePairs(params.reads, checkIfExists: true)
   // TRIMGALORE(read_pairs_ch, params.trim_length)
   // FASTQC(TRIMGALORE.out.trimmed_read_pairs_ch, params.results_dir)
-  RSEM(params.reads, params.star_index, params.results_dir)
+  RSEM(read_pairs_ch, params.star_index, params.results_dir)
 }
 
 /*
