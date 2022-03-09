@@ -87,7 +87,7 @@ process RSEM {
     cp -rf $star_index/* .
     echo "./ files:"
     ls -rlth .
-    rsem-calculate-expression <(zcat ${trimmed_reads[0]}) <(zcat ${trimmed_reads[1]}) $star_index output_${pair_id}
+    rsem-calculate-expression <(zcat ${trimmed_reads[0]}) <(zcat ${trimmed_reads[1]}) $star_index output_${pair_id} \
       --num-threads 8 \
       --paired-end \
       --star \
