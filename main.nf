@@ -80,8 +80,8 @@ process RSEM {
     val(results_dir)
 
     output:
-    tuple val(pair_id), path("output_${pair_id}.genes.results.txt"), emit: gene_results_ch
-    tuple val(pair_id), path("output_${pair_id}.isoforms.results.txt"), emit: isoform_results_ch
+    tuple val(pair_id), path("output_${pair_id}.genes.results"), emit: gene_results_ch
+    tuple val(pair_id), path("output_${pair_id}.isoforms.results"), emit: isoform_results_ch
 
     script:
     """
@@ -96,7 +96,6 @@ process RSEM {
       --append-names \
       --output-genome-bam \
       $star_index output_${pair_id}
-    ls -rlth .
     """
 }
 
