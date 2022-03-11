@@ -96,6 +96,7 @@ process RSEM {
       --append-names \
       --output-genome-bam \
       $star_index output_${pair_id}
+    ls -rlth .
     """
 }
 
