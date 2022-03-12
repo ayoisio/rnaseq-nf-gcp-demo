@@ -57,7 +57,7 @@ def load_gene_results(results_path, table_id, sample_id, verbose=False):
     if not result.error_result:
         print('Job "{}" loaded without error. Current status is {}.'.format(result.job_id, result.state))
     else:
-        print("Error occurred while loading job "{}":\n{}\nCurrent status is {}.".format(result.job_id, result.error_result, result.state))
+        print('Error occurred while loading job "{}":\n{}\nCurrent status is {}.'.format(result.job_id, result.error_result, result.state))
 
 
 def load_isoform_results(results_path, table_id, sample_id, verbose=False):
