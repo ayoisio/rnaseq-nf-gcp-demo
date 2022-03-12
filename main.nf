@@ -10,6 +10,7 @@ nextflow.preview.dsl=2
  * Default pipeline parameters. They can be overriden on the command line eg.
  * given `params.foo` specify on the run command line `--foo some_value`.
  */
+params.project_dir = "${projectDir}"
 params.reads = "$projectDir/*_{1,2}.fastq.gz"
 params.star_index = "$projectDir/assembly-annotation/refdata-gex-GRCh38-2020-A/star"
 params.results_dir = 'results'
@@ -108,56 +109,16 @@ process WRITE_GENE_RESULTS_TO_BQ {
     input:
     tuple val(pair_id), path(results)
     val(table_id)
+    val(project_dir)
 
     script:
     """
-    #!/usr/bin/env python
-
-import pandas as pd
-import pytz
-from decimal import Decimal
-from google.cloud import bigquery
-
-# determine table id
-table_id = "${table_id}"
-print("table_id:", table_id)
-
-# determine results df
-decimal_columns = ["length", "effective_length", "expected_count", "TPM", "FPKM"]
-results_df = pd.read_csv("${results}", sep='\t', converters=dict.fromkeys(decimal_columns, Decimal))
-results_df.insert(0, 'sample_id', "${pair_id}")
-results_df.rename(columns={'transcript_id(s)': 'transcript_ids'}, inplace=True)
-print("results_df.shape:", results_df.shape)
-
-# create BigQuery client
-client = bigquery.Client()
-
-# define load job config
-job_config = bigquery.LoadJobConfig(
-    schema=[
-        bigquery.SchemaField("sample_id", bigquery.enums.SqlTypeNames.STRING),
-        bigquery.SchemaField("gene_id", bigquery.enums.SqlTypeNames.STRING),
-        bigquery.SchemaField("transcript_ids", bigquery.enums.SqlTypeNames.STRING),
-        bigquery.SchemaField("length", bigquery.enums.SqlTypeNames.DECIMAL),
-        bigquery.SchemaField("effective_length", bigquery.enums.SqlTypeNames.DECIMAL),
-        bigquery.SchemaField("expected_count", bigquery.enums.SqlTypeNames.DECIMAL),
-        bigquery.SchemaField("TPM", bigquery.enums.SqlTypeNames.DECIMAL),
-        bigquery.SchemaField("FPKM", bigquery.enums.SqlTypeNames.DECIMAL),
-    ],
-    clustering_fields=["sample_id"],
-    write_disposition="WRITE_APPEND",
-)
-
-# execute job
-job = client.load_table_from_dataframe(
-    results_df, table_id, job_config=job_config
-)
-result = job.result()
-
-if not result.error_result:
-    print("Job loaded without error. Current status is {}.".format(result.state))
-else:
-    print("Error occurred while loading job: {}.Current status is {}.".format(result.error_result, result.state))
+    python ${project_dir}/load_rsem_results_into_bq.py \
+      --results_type gene \
+      --results_path ${results} \
+      --table_id ${table_id} \
+      --sample_id ${pair_id} \
+      --verbose True
     """
 }
 
@@ -170,56 +131,16 @@ process WRITE_ISOFORM_RESULTS_TO_BQ {
     input:
     tuple val(pair_id), path(results)
     val(table_id)
+    val(project_dir)
 
     script:
     """
-    #!/usr/bin/python
-
-import pandas as pd
-import pytz
-from decimal import Decimal
-from google.cloud import bigquery
-
-# determine table id
-table_id = "${table_id}"
-print("table_id:", table_id)
-
-# determine results df
-decimal_columns = ["length", "effective_length", "expected_count", "TPM", "FPKM", "IsoPct"]
-results_df = pd.read_csv("${results}", sep='\t', converters=dict.fromkeys(decimal_columns, Decimal))
-results_df.insert(0, 'sample_id', "${pair_id}")
-print("results_df.shape:", results_df.shape)
-
-# create BigQuery client
-client = bigquery.Client()
-
-# define load job config
-job_config = bigquery.LoadJobConfig(
-    schema=[
-        bigquery.SchemaField("sample_id", bigquery.enums.SqlTypeNames.STRING),
-        bigquery.SchemaField("transcript_id", bigquery.enums.SqlTypeNames.STRING),
-        bigquery.SchemaField("gene_id", bigquery.enums.SqlTypeNames.STRING),
-        bigquery.SchemaField("length", bigquery.enums.SqlTypeNames.DECIMAL),
-        bigquery.SchemaField("effective_length", bigquery.enums.SqlTypeNames.DECIMAL),
-        bigquery.SchemaField("expected_count", bigquery.enums.SqlTypeNames.DECIMAL),
-        bigquery.SchemaField("TPM", bigquery.enums.SqlTypeNames.DECIMAL),
-        bigquery.SchemaField("FPKM", bigquery.enums.SqlTypeNames.DECIMAL),
-        bigquery.SchemaField("IsoPct", bigquery.enums.SqlTypeNames.DECIMAL),
-    ],
-    clustering_fields=["sample_id"],
-    write_disposition="WRITE_APPEND",
-)
-
-# execute job
-job = client.load_table_from_dataframe(
-    results_df, table_id, job_config=job_config
-)
-result = job.result()
-
-if not result.error_result:
-    print("Job loaded without error. Current status is {}.".format(result.state))
-else:
-    print("Error occurred while loading job: {}.Current status is {}.".format(result.error_result, result.state))
+    python ${project_dir}/load_rsem_results_into_bq.py \
+      --results_type isoform \
+      --results_path ${results} \
+      --table_id ${table_id} \
+      --sample_id ${pair_id} \
+      --verbose True
     """
 }
 
@@ -228,8 +149,8 @@ workflow {
   // TRIMGALORE(read_pairs_ch, params.trim_length)
   // FASTQC(TRIMGALORE.out.trimmed_read_pairs_ch, params.results_dir)
   // RSEM(read_pairs_ch, params.star_index, params.results_dir)
-  WRITE_GENE_RESULTS_TO_BQ(read_pairs_ch, params.gene_results_table_id)
-  // WRITE_ISOFORM_RESULTS_TO_BQ(RSEM.out.isoform_results_ch, params.isoform_results_table_id)
+  WRITE_GENE_RESULTS_TO_BQ(read_pairs_ch, params.gene_results_table_id, params.project_dir)
+  // WRITE_ISOFORM_RESULTS_TO_BQ(RSEM.out.isoform_results_ch, params.isoform_results_table_id, params.project_dir)
 }
 
 /*
