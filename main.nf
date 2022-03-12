@@ -109,11 +109,11 @@ process WRITE_GENE_RESULTS_TO_BQ {
     input:
     tuple val(pair_id), path(results)
     val(table_id)
-    val(project_dir)
+    path(project_dir)
 
     script:
     """
-    echo "$projectDir:"
+    echo "${project_dir}:"
     ls -rlth ${project_dir}
     echo "./:"
     ls -rlth .
