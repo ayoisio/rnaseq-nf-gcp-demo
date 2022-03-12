@@ -154,7 +154,7 @@ job = client.load_table_from_dataframe(
 )
 result = job.result()
 
-if result.error_result:
+if not result.error_result:
     print("Job loaded without error. Current status is {}.".format(result.state))
 else:
     print("Error occurred while loading job:\n{}\nCurrent status is {}.".format(result.error_result, result.state))
@@ -216,7 +216,7 @@ job = client.load_table_from_dataframe(
 )
 result = job.result()
 
-if result.error_result:
+if not result.error_result:
     print("Job loaded without error. Current status is {}.".format(result.state))
 else:
     print("Error occurred while loading job:\n{}\nCurrent status is {}.".format(result.error_result, result.state))
