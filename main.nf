@@ -113,6 +113,10 @@ process WRITE_GENE_RESULTS_TO_BQ {
 
     script:
     """
+    echo "$projectDir:"
+    ls -rlth ${project_dir}
+    echo "./:"
+    ls -rlth .
     python ${project_dir}/load_rsem_results_into_bq.py \
       --results_type gene \
       --results_path ${results} \
