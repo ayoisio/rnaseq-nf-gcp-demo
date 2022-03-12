@@ -159,7 +159,7 @@ if __name__ == "__main__":
     # determine input arguments
     args = parser.parse_args()
 
-    if args.results_type.lower() == "gene"
+    if args.results_type.lower() == "gene":
         load_gene_results(
             results_path=args.results_path,
             table_id=args.table_id,
