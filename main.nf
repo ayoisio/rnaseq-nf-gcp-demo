@@ -113,13 +113,9 @@ process WRITE_GENE_RESULTS_TO_BQ {
 
     script:
     """
-    echo "${project_dir}:"
-    ls -rlth ${project_dir}
-    echo "./:"
-    ls -rlth .
     python ${project_dir}/load_rsem_results_into_bq.py \
       --results_type gene \
-      --results_path ${results[0]} \
+      --results_path ${results} \
       --table_id ${table_id} \
       --sample_id ${pair_id} \
       --verbose True
