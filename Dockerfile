@@ -13,6 +13,7 @@ RUN wget http://archive.ubuntu.com/ubuntu/pool/universe/t/trim-galore/trim-galor
 RUN apt-get install -f -y ./trim-galore_0.6.5-1_all.deb
 
 RUN pip install multiqc==1.12 \
+                pyarrow==7.0.0 \
                 google-cloud-bigquery==2.34.2 \
                 pandas==1.3.5 \
                 numpy==1.21.5 \
