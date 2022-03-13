@@ -104,10 +104,10 @@ process RSEM {
  * Write gene results to BQ
  */
 process WRITE_GENE_RESULTS_TO_BQ {
-    tag "test"
+    tag "$pair_id"
 
     input:
-    path(results)
+    tuple val(pair_id), path(results)
     val(table_id)
     path(project_dir)
 
@@ -117,7 +117,7 @@ process WRITE_GENE_RESULTS_TO_BQ {
       --results_type gene \
       --results_path ${results} \
       --table_id ${table_id} \
-      --sample_id test \
+      --sample_id ${pair_id} \
       --verbose True
     """
 }
@@ -145,12 +145,12 @@ process WRITE_ISOFORM_RESULTS_TO_BQ {
 }
 
 workflow {
-  // read_pairs_ch = channel.fromFilePairs(params.reads, checkIfExists: true)
-  // TRIMGALORE(read_pairs_ch, params.trim_length)
-  // FASTQC(TRIMGALORE.out.trimmed_read_pairs_ch, params.results_dir)
-  // RSEM(TRIMGALORE.out.trimmed_read_pairs_ch, params.star_index, params.results_dir)
-  WRITE_GENE_RESULTS_TO_BQ(params.example_gene_results, params.gene_results_table_id, params.project_dir)
-  // WRITE_ISOFORM_RESULTS_TO_BQ(RSEM.out.isoform_results_ch, params.isoform_results_table_id, params.project_dir)
+  read_pairs_ch = channel.fromFilePairs(params.reads, checkIfExists: true)
+  TRIMGALORE(read_pairs_ch, params.trim_length)
+  FASTQC(TRIMGALORE.out.trimmed_read_pairs_ch, params.results_dir)
+  RSEM(TRIMGALORE.out.trimmed_read_pairs_ch, params.star_index, params.results_dir)
+  WRITE_GENE_RESULTS_TO_BQ(RSEM.out.gene_results_ch, params.gene_results_table_id, params.project_dir)
+  WRITE_ISOFORM_RESULTS_TO_BQ(RSEM.out.isoform_results_ch, params.isoform_results_table_id, params.project_dir)
 }
 
 /*
