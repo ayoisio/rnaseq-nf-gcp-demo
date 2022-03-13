@@ -131,7 +131,7 @@ process WRITE_ISOFORM_RESULTS_TO_BQ {
     input:
     tuple val(pair_id), path(results)
     val(table_id)
-    val(project_dir)
+    path(project_dir)
 
     script:
     """
