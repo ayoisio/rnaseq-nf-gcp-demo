@@ -4,7 +4,7 @@
  * Enable modules
  * https://www.nextflow.io/docs/latest/dsl2.html
  */
-nextflow.preview.dsl=2
+nextflow.enable.dsl=2
 
 /*
  * Default pipeline parameters. They can be overriden on the command line eg.
