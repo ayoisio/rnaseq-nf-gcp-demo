@@ -1,6 +1,6 @@
 # RNASeq Nextflow Demo on Google Cloud
 
-A proof-of-concept paired-end RNA-Seq pipeline managed by Nextflow using the Google Cloud Life Sciences API. 
+A proof-of-concept paired-end RNA-Seq pipeline managed by [Nextflow](https://nextflow.io/) using the Google Cloud [Life Sciences API](https://cloud.google.com/life-sciences/docs/reference/rest). 
 
 The steps of the pipeline are:
 1. Adapter and quality trimming with [Trim Galore](https://www.bioinformatics.babraham.ac.uk/projects/trim_galore/)
