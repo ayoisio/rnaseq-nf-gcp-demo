@@ -1,4 +1,4 @@
-# RNASeq GCP Nextflow Demo
+# RNASeq Nextflow Demo on Google Cloud
 
 A proof-of-concept pair-end RNA-Seq pipeline managed by Nextflow using the Google Cloud Life Sciences API. 
 
